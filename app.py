@@ -5,53 +5,100 @@ from google import genai
 from google.genai import types
 
 # Page Configurations
-st.set_page_config(page_title="Pro AI Chart & News Analyzer", layout="wide", page_icon="📈")
+st.set_page_config(page_title="Pro AI Trading Terminal", layout="wide", page_icon="⚡")
 
 # ==========================================
-# 🎨 CUSTOM LAYOUT & THEME ENGINE
+# 🎨 HIGH-END TRADING TERMINAL STYLE ENGINE
 # ==========================================
 with st.sidebar:
-    st.header("🎨 Theme & Layout Customization")
-    primary_color = st.color_picker("Primary Accent Color", "#00FF66")
-    bg_color = st.color_picker("Background Style", "#0E1117")
-    text_color = st.color_picker("Text Color", "#FFFFFF")
+    st.header("🎨 Interface Theme Customizer")
+    primary_color = st.color_picker("Accent Highlights", "#00FF66", help="Changes metrics and active button glow")
+    bg_color = st.color_picker("Terminal Background", "#090D14", help="Deep dashboard tone")
+    card_bg = st.color_picker("Card Containers", "#131924", help="Layered panel tone")
+    text_color = st.color_picker("Typography Fill", "#F0F4F8")
     
+    # Advanced CSS Injection matching premium developer frameworks
     st.markdown(f"""
         <style>
-            .stApp {{ background-color: {bg_color}; color: {text_color}; }}
-            h1, h2, h3, p, span, label {{ color: {text_color} !important; }}
-            div[data-testid="stMetricValue"] {{ color: {primary_color} !important; font-family: 'JetBrains Mono', monospace; }}
+            .stApp {{
+                background-color: {bg_color};
+                color: {text_color};
+                font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            }}
+            h1, h2, h3, p, span, label, th, td {{
+                color: {text_color} !important;
+            }}
+            /* Premium Dashboard Metric Cards */
+            div[data-testid="stMetricValue"] {{
+                color: {primary_color} !important;
+                font-family: 'JetBrains Mono', monospace;
+                font-weight: 700;
+                font-size: 2.2rem !important;
+            }}
+            div[data-testid="metric-container"] {{
+                background-color: {card_bg};
+                padding: 20px;
+                border-radius: 12px;
+                border: 1px solid rgba(255,255,255,0.05);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }}
+            /* Institutional Button Execution States */
             .stButton>button {{
-                background-color: {primary_color} !important; color: #000000 !important;
-                font-weight: bold; border-radius: 8px; border: none; width: 100%;
+                background: linear-gradient(135deg, {primary_color} 0%, #00CC52 100%) !important;
+                color: #02060D !important;
+                font-weight: 800;
+                font-size: 1.05rem;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                border-radius: 8px;
+                border: none;
+                padding: 14px 20px;
+                width: 100%;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(0, 255, 102, 0.2);
+            }}
+            .stButton>button:hover {{
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 255, 102, 0.3);
+            }}
+            /* Info Box & Strategic Insights Restyling */
+            .stAlert {{
+                background-color: {card_bg} !important;
+                border-left: 5px solid {primary_color} !important;
+                color: {text_color} !important;
+                border-radius: 8px;
+            }}
+            /* Clean Section Dividers */
+            hr {{
+                border-color: rgba(255,255,255,0.08) !important;
             }}
         </style>
     """, unsafe_allow_html=True)
 
     st.markdown("---")
-    st.header("🔧 Risk Management Profile")
+    st.header("🔧 Risk Profile Constraints")
     api_key = st.text_input("Enter Gemini API Key", type="password")
     
     st.markdown("---")
-    account_balance = st.number_input("💰 Account Balance ($)", min_value=10, value=10000, step=100)
-    risk_percentage = st.slider("⚠️ Risk Per Trade (%)", min_value=0.25, max_value=5.0, value=1.0, step=0.25)
-    risk_reward = st.slider("🎯 Target Risk-to-Reward Ratio", min_value=1.0, max_value=4.0, value=2.0, step=0.5)
+    account_balance = st.number_input("💰 Capital Inventory ($)", min_value=10, value=10000, step=100)
+    risk_percentage = st.slider("⚠️ Allocation Risk (%)", min_value=0.25, max_value=5.0, value=1.0, step=0.25)
+    risk_reward = st.slider("🎯 Position Target Ratio", min_value=1.0, max_value=4.0, value=2.0, step=0.5)
     
     allowed_risk_usd = (account_balance * risk_percentage) / 100
-    st.metric(label="Total Cash At Risk", value=f"${allowed_risk_usd:,.2f}")
+    st.metric(label="Absolute Value Protection", value=f"${allowed_risk_usd:,.2f}")
 
 # ==========================================
-# 📊 MAIN INTERFACE & NEWS FILTERS
+# 📊 APP INTERFACE STRUCTURE
 # ==========================================
-st.markdown("# 📈 Pro AI Visual Chart & News Analyzer")
-st.markdown("Combines chart structural analytics with high-impact economic news indicators.")
+st.markdown("<h1 style='text-align: center; font-weight: 800; margin-bottom: 5px;'>⚡ PRO AI CHART CORE TERMINAL</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #8A99AD !important; margin-bottom: 30px;'>Advanced Technical Scan Engine for XAUUSD, Crypto and Major Forex Pairs</p>", unsafe_allow_html=True)
 
-# 📰 Dynamic News Catalyst Selector
-st.subheader("📰 Step 1: Select Today's Economic Calendar Filters")
+# 📰 Macro Overlay Section Layout
+st.markdown("### 📰 Macro Environmental Inputs")
 news_catalyst = st.selectbox(
-    "Select high-impact news events dropping today / this session:",
+    "Active High-Impact Volatility Filters:",
     [
-        "None / Clear Market Environment",
+        "None / Clear Structural Trading Conditions",
         "US Core Retail Sales Data Release (High Volatility)",
         "US CPI / PPI Inflation Print (Extreme Volatility for XAUUSD)",
         "US Initial Jobless Claims / Employment Data",
@@ -59,31 +106,31 @@ news_catalyst = st.selectbox(
         "Geopolitical Tensions / Sudden Global Market Risk Shifts"
     ]
 )
-
-custom_news = st.text_input("Or type custom market news factors manually (Optional):", "")
+custom_news = st.text_input("Manual Event Overrides (Optional):", "")
 active_news = custom_news if custom_news else news_catalyst
 
 st.markdown("---")
-st.subheader("🖼️ Step 2: Upload Chart Capture")
-uploaded_file = st.file_uploader("Drop your chart screenshot here...", type=["png", "jpg", "jpeg"])
+
+# Chart Drag-Drop Upload Panel
+uploaded_file = st.file_uploader("", type=["png", "jpg", "jpeg"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([1.1, 0.9], gap="large")
     
     with col1:
-        st.subheader("🖼️ Uploaded Chart")
+        st.markdown("<h3 style='margin-bottom: 15px;'>🖼️ Live Market Context Capture</h3>", unsafe_allow_html=True)
         st.image(image, use_container_width=True)
         
     with col2:
-        st.subheader("🧠 Risk & News Assessment Analysis")
-        run_analysis = st.button("🚀 Analyze Position Size & News Strategy")
+        st.markdown("<h3 style='margin-bottom: 15px;'>🧠 Automated Execution Breakdown</h3>", unsafe_allow_html=True)
+        run_analysis = st.button("🚀 Run Structural Core Analysis")
         
         if run_analysis:
             if not api_key:
-                st.warning("Please provide a valid Gemini API Key in the sidebar panel.")
+                st.warning("Execution Halted: API Validation Token Missing from Sidebar Panel.")
             else:
-                with st.spinner("⚡ Running data synthesis scan..."):
+                with st.spinner("⚡ Activating Deep Vision Scanners..."):
                     try:
                         client = genai.Client(api_key=api_key)
                         
@@ -126,25 +173,19 @@ if uploaded_file is not None:
                         
                         action = analysis.get("action", "HOLD").upper()
                         if action == "BUY":
-                            st.success("🎯 SIGNAL GENERATED: STRONG BUY")
+                            st.markdown("<div style='background-color: rgba(0, 255, 102, 0.1); border: 1px solid #00FF66; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 1.2rem; color: #00FF66 !important; margin-bottom: 20px;'>🎯 POSITION STRATEGY: STRONG BUY SIGNAL</div>", unsafe_allow_html=True)
                         elif action == "SELL":
-                            st.error("🎯 SIGNAL GENERATED: STRONG SELL")
+                            st.markdown("<div style='background-color: rgba(255, 51, 51, 0.1); border: 1px solid #FF3333; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 1.2rem; color: #FF3333 !important; margin-bottom: 20px;'>🎯 POSITION STRATEGY: STRONG SELL SIGNAL</div>", unsafe_allow_html=True)
                         else:
-                            st.warning("🎯 SIGNAL GENERATED: HOLD / NO SYSTEM SETUP")
+                            st.markdown("<div style='background-color: rgba(241, 196, 15, 0.1); border: 1px solid #F1C40F; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 1.2rem; color: #F1C40F !important; margin-bottom: 20px;'>🎯 POSITION STRATEGY: NEUTRAL MARKET STANDBY / HOLD</div>", unsafe_allow_html=True)
                             
+                        # Layout Key Metrics Dashboard
                         m1, m2, m3 = st.columns(3)
-                        m1.metric(label="📍 Recommended Entry", value=f"${analysis.get('entry'):,}")
-                        m2.metric(label="🛑 Invalidation (Stop Loss)", value=f"${analysis.get('stop_loss'):,}")
-                        m3.metric(label="💰 Objective (Take Profit)", value=f"${analysis.get('take_profit'):,}")
+                        m1.metric(label="📍 Target Entry", value=f"${analysis.get('entry'):,}")
+                        m2.metric(label="🛑 Stop Loss (SL)", value=f"${analysis.get('stop_loss'):,}")
+                        m3.metric(label="💰 Take Profit (TP)", value=f"${analysis.get('take_profit'):,}")
                         
-                        st.markdown("---")
+                        st.markdown("<br>", unsafe_allow_html=True)
                         
-                        st.subheader("⚖️ Precision Order Execution")
-                        st.info(f"👉 **EXECUTION SIZE:** Use **{analysis.get('lot_size')}** to ensure total risk stays fixed at exactly **${allowed_risk_usd:,.2f}**.")
-                        
-                        st.markdown(f"### 📰 Macro Assessment: **{analysis.get('news_impact_rating')}**")
-                        st.markdown("### 🔍 Market Structure Reasoning")
-                        st.write(analysis.get("reasoning"))
-                        
-                    except Exception as e:
-                        st.error(f"System Parsing Error: {str(e)}")
+                        # Position sizing display framework
+                        st.subheader("⚖️ Risk Allocation Engine Order")
