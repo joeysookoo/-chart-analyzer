@@ -198,7 +198,7 @@ if uploaded_file is not None:
                     config=types.GenerateContentConfig(
                         response_mime_type="application/json",
                         response_schema=json_schema,
-                        temperature=0.1
+                        temperature=0.0
                     )
                 )
                 
