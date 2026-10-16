@@ -105,7 +105,7 @@ st.markdown("""
 # 🔧 SIDEBAR CONFIGURATION ARCHITECTURE
 # =========================================================================
 with st.sidebar:
-    st.markdown("<h2 style='text-align: center; color: #00ff66; font-weight: 800; tracking-wide: 1px;'>⚡ TERMINAL</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; color: #00ff66; font-weight: 800;'>⚡ TERMINAL</h2>", unsafe_allow_html=True)
     st.markdown("---")
     
     st.header("🔑 Authentication")
@@ -162,50 +162,59 @@ if uploaded_file is not None:
         st.markdown("<h4 style='margin-bottom: 20px; color: #8a99ad !important;'>🧠 Computed Output Plan</h4>", unsafe_allow_html=True)
         run_analysis = st.button("🚀 Execute System Analysis Run")
         
-        if run_analysis:
-            if not api_key:
-                st.warning("Execution Terminated: API Authentication Token is Missing.")
-            else:
-                with st.spinner("⚡ Running data synthesis scan..."):
-                    client = genai.Client(api_key=api_key)
-                    
-                    prompt = f"""
-                    Analyze this chart screenshot while incorporating these fundamental variables:
-                    - Current Active News Catalyst: {active_news}
-                    - Starting Balance: ${account_balance}
-                    - Absolute Risk Allowed: ${allowed_risk_usd}
-                    - Target Risk-to-Reward: {risk_reward}:1
-                    """
-                    
-                    json_schema = {
-                        "type": "OBJECT",
-                        "properties": {
-                            "pair": {"type": "STRING"},
-                            "action": {"type": "STRING"},
-                            "entry": {"type": "NUMBER"},
-                            "stop_loss": {"type": "NUMBER"},
-                            "take_profit": {"type": "NUMBER"},
-                            "lot_size": {"type": "STRING"},
-                            "news_impact_rating": {"type": "STRING"},
-                            "reasoning": {"type": "STRING"}
-                        },
-                        "required": ["pair", "action", "entry", "stop_loss", "take_profit", "lot_size", "news_impact_rating", "reasoning"]
-                    }
-                    
-                    response = client.models.generate_content(
-                        model='gemini-2.0-flash',
-                        contents=[image, prompt],
-                        config=types.GenerateContentConfig(
-                            response_mime_type="application/json",
-                            response_schema=json_schema,
-                            temperature=0.1
-                        )
+        if run_analysis and not api_key:
+            st.warning("Execution Terminated: API Authentication Token is Missing.")
+            
+        if run_analysis and api_key:
+            with st.spinner("⚡ Running data synthesis scan..."):
+                client = genai.Client(api_key=api_key)
+                
+                prompt = f"""
+                Analyze this chart screenshot while incorporating these fundamental variables:
+                - Current Active News Catalyst: {active_news}
+                - Starting Balance: ${account_balance}
+                - Absolute Risk Allowed: ${allowed_risk_usd}
+                - Target Risk-to-Reward: {risk_reward}:1
+                """
+                
+                json_schema = {
+                    "type": "OBJECT",
+                    "properties": {
+                        "pair": {"type": "STRING"},
+                        "action": {"type": "STRING"},
+                        "entry": {"type": "NUMBER"},
+                        "stop_loss": {"type": "NUMBER"},
+                        "take_profit": {"type": "NUMBER"},
+                        "lot_size": {"type": "STRING"},
+                        "news_impact_rating": {"type": "STRING"},
+                        "reasoning": {"type": "STRING"}
+                    },
+                    "required": ["pair", "action", "entry", "stop_loss", "take_profit", "lot_size", "news_impact_rating", "reasoning"]
+                }
+                
+                response = client.models.generate_content(
+                    model='gemini-2.0-flash',
+                    contents=[image, prompt],
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        response_schema=json_schema,
+                        temperature=0.1
                     )
-                    
-                    analysis = json.loads(response.text)
-                    action = analysis.get("action", "HOLD").upper()
-                    
-                    # Premium Output Formatting Badges
-                    if action == "BUY":
-                        st.markdown("<div style='background: rgba(0, 255, 102, 0.1); border: 1px solid #00ff66; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 1.2rem; color: #00ff66 !important; text-align: center; letter-spacing: 0.5px;'>🎯 TRADING MATRIX STRATEGY: STRONG BUY SIGNAL</div>", unsafe_allow_html=True)
-                    elif action == "SELL":
+                )
+                
+                analysis = json.loads(response.text)
+                action = analysis.get("action", "HOLD").upper()
+                
+                # Premium Native Output Banners
+                if action == "BUY":
+                    st.success("🎯 TRADING MATRIX STRATEGY: STRONG BUY SIGNAL")
+                elif action == "SELL":
+                    st.error("🎯 TRADING MATRIX STRATEGY: STRONG SELL SIGNAL")
+                else:
+                    st.warning("🎯 TRADING MATRIX STRATEGY: NEUTRAL MARKET HOLD")
+                
+                st.markdown("<br>", unsafe_allow_html=True)
+                
+                # Core Parameter Columns Display Grid
+                m1, m2, m3 = st.columns(3)
+                m1.metric(label="📍 Target Entry", value=f"${analysis.get('entry'):,}")
